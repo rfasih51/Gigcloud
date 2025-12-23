@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block title %}My Resume{% endblock %}
+{% block styles %}
+<style>
+:root {
+    --primary-gradient: linear-gradient(135deg, #1a1c20 0%, #2c3e50 100%);
+    --accent-color: #a3e635;
+    --text-primary: #ffffff;
+    --text-secondary: #e5e5e5;
+    --card-bg: rgba(35, 39, 47, 0.8);
+    --hover-shadow: 0 8px 32px rgba(163, 230, 53, 0.2);
+}
+
+body {
+    background: var(--primary-gradient);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23a3e635' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.resume-header {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 80px;
+    position: relative;
+    z-index: 1;
+}
+
+.resume-header img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-color);
+    margin-bottom: 25px;
+    box-shadow: 0 0 30px rgba(163, 230, 53, 0.3);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.resume-header img:hover {
+    transform: scale(1.05) rotateY(10deg);
+    box-shadow: 0 0 40px rgba(163, 230, 53, 0.4);
+}
+
+.resume-header h1 {
+    font-weight: 800;
+    color: var(--text-primary);
+    font-size: 3.2rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #ffffff, #a3e635);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.resume-header h2 {
+    color: var(--accent-color);
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.resume-section-title {
+    color: var(--text-primary);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.resume-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--accent-color);
+    border-radius: 2px;
+}
+
+.resume-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 35px 30px;
+    margin-bottom: 35px;
+    color: var(--text-secondary);
+    border: 1px solid rgba(163, 230, 53, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.resume-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(163, 230, 53, 0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.resume-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--hover-shadow);
+}
+
+.resume-card:hover::before {
+    transform: translateX(100%);
+}
+
+.resume-card .card-title {
+    color: var(--accent-color);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.resume-card .card-subtitle {
+    color: #bdbdbd;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.resume-card .card-text {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.resume-card .icon {
+    color: var(--accent-color);
+    font-size: 1.4rem;
+    margin-right: 10px;
+}
+
+@media (max-width: 767px) {
+    .resume-header h1 { font-size: 2.4rem; }
+    .resume-section-title { font-size: 1.8rem; }
+    .resume-card { padding: 25px 20px; }
+    .resume-header img {
+        width: 120px;
+        height: 120px;
+    }
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="resume-header animate__animated animate__fadeInDown">
+    <!-- Replace src with your actual profile picture path -->
+    <img src="https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Profile Picture">
+    <h1>Fasih ur Rehman</h1>
+    <h2>Computer Science Student & Web Developer</h2>
+</div>
+<div class="row mb-5 animate__animated animate__fadeInUp">
+    <div class="col-md-6">
+        <h3 class="resume-section-title">Education</h3>
+        <div class="resume-card mb-4">
+            <div class="card-subtitle mb-2"><i class="bi bi-calendar icon"></i>March 2022 - Present</div>
+            <div class="card-title">BS in Computer Science</div>
+            <div class="card-text">Studying core concepts of programming, algorithms, and web development. <br> <span class="text-secondary">University of Bahawalpur</span></div>
+        </div>
+        <div class="resume-card mb-4">
+            <div class="card-subtitle mb-2"><i class="bi bi-calendar icon"></i>2020 - 2022</div>
+            <div class="card-title">Intermediate in Pre-Engineering</div>
+            <div class="card-text">Completed with distinction. <br> <span class="text-secondary">College</span></div>
+        </div>
+        <div class="resume-card mb-4">
+            <div class="card-subtitle mb-2"><i class="bi bi-calendar icon"></i>2018 - 2020</div>
+            <div class="card-title">Metric Medical</div>
+            <div class="card-text">Completed with distinction. Passionate Student <br> <span class="text-secondary">School</span></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h3 class="resume-section-title">Experience</h3>
+        <div class="resume-card mb-4">
+            <div class="card-subtitle mb-2"><i class="bi bi-calendar icon"></i>June 2023 - Present</div>
+            <div class="card-title">Web Developer (Intern)</div>
+            <div class="card-text">Developed responsive websites using Django and Bootstrap. <br> <span class="text-secondary">Tech Solutions</span></div>
+        </div>
+        <div class="resume-card mb-4">
+            <div class="card-subtitle mb-2"><i class="bi bi-calendar icon"></i>2022 - 2023</div>
+            <div class="card-title">Freelance Python Developer</div>
+            <div class="card-text">Worked on small automation and web scraping projects for clients worldwide.</div>
+        </div>
+        <div class="resume-card mb-4">
+            <div class="card-subtitle mb-2"><i class="bi bi-calendar icon"></i>2022 - 2025</div>
+            <div class="card-title">Spring boot Developer</div>
+            <div class="card-text">Worked on small automation and web scraping projects in java Frameworks for clients worldwide.</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+{% endblock %}

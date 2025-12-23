@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Contact</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .contact-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .contact-container h2 {
+            margin-bottom: 10px;
+        }
+        .input-box {
+            margin: 10px 0;
+        }
+        .input-box input,
+        .input-box textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+            color: #333;
+        }
+        .btn {
+            width: 100%;
+            background: #ffa502;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <h2>Update Contact</h2>
+        <p>Modify the details below and submit to update your contact information.</p>
+        
+        <form action="{% url 'do_update' contact.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-box">
+                <input id="firstName" type="text" name="firstName" value="{{ contact.firstName }}" required>
+            </div>
+            <div class="input-box">
+                <input id="lastName" type="text" name="lastName" value="{{ contact.lastName }}" required>
+            </div>
+            <div class="input-box">
+                <input id="email" type="email" name="email" value="{{ contact.email }}" required>
+            </div>
+            <div class="input-box">
+                <textarea id="message" name="message" rows="5" required>{{ contact.message }}</textarea>
+            </div>
+            <div class="input-box">
+                <input type="file" id="image" name="image" accept="image/*">
+                <p>Current Image: <a href="{{ contact.image.url }}" target="_blank">View</a></p>
+            </div>
+            <button type="submit" class="btn">Update Contact</button>
+        </form>
+    </div>
+</body>
+</html>

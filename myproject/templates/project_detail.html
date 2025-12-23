@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block styles %}
+<style>
+    .project-detail-card {
+        max-width: 700px;
+        margin: 40px auto;
+        border-radius: 24px;
+        box-shadow: 0 8px 32px rgba(44,62,80,0.12);
+        background: #fff;
+        overflow: hidden;
+    }
+    .project-detail-img {
+        width: 100%;
+        height: 340px;
+        object-fit: cover;
+        border-radius: 24px 24px 0 0;
+    }
+    .project-detail-body {
+        padding: 2.5rem;
+    }
+    .project-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+    .project-client {
+        color: #888;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+    .project-skills {
+        margin-bottom: 1.5rem;
+    }
+    .project-skills .badge {
+        background: linear-gradient(45deg, #3498db, #2ecc71);
+        color: #fff;
+        font-size: 1em;
+        margin-right: 6px;
+        margin-bottom: 6px;
+    }
+    .back-btn {
+        margin-top: 2rem;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="project-detail-card animate__animated animate__fadeInUp">
+    {% if project.image %}
+    <img src="{{ project.image.url }}" class="project-detail-img" alt="{{ project.title }}">
+    {% endif %}
+    <div class="project-detail-body">
+        <h1 class="project-title mb-3">{{ project.title }}</h1>
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+                <div class="project-client mb-2">
+                    <i class="bi bi-person-badge"></i>
+                    <span>Client: </span>
+                    <span class="fw-bold">{% if project.client %}{{ project.client.name }}{% else %}N/A{% endif %}</span>
+                </div>
+                <div class="mb-1">
+                    <strong>Delivery:</strong> {{ project.delivery_time }} days &nbsp; • &nbsp; <strong>Revisions:</strong> {{ project.revisions }}
+                </div>
+            </div>
+            <div class="text-end">
+                <div class="h3 mb-1">{{ project.currency }} {{ project.price }}</div>
+                <div>
+                    {% if project.offers_consultation %}
+                        <span class="badge bg-info text-dark">Offers consultation</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="project-skills mb-3">
+            {% for skill in project.skills.all %}
+                <span class="badge">{{ skill.name }}</span>
+            {% empty %}<span class="text-muted">No skills listed</span>{% endfor %}
+        </div>
+        <div class="mb-4">
+            <h5>Description</h5>
+            <p class="text-muted">{{ project.description }}</p>
+        </div>
+        <div class="mb-4">
+            <h5>Ratings</h5>
+            <p class="text-muted">{{ project.rating }} / 5 ({{ project.reviews_count }} reviews)</p>
+        </div>
+        <a href="/" class="btn btn-outline-primary back-btn"><i class="bi bi-arrow-left"></i> Back to Home</a>
+    </div>
+</div>
+{% endblock %} 

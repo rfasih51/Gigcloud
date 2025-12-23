@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% block styles %}
+<style>
+    .contacts-section {
+        padding: 60px 0;
+        background: var(--darker-bg);
+    }
+    .contacts-table-container {
+        background: var(--dark-bg);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(163,230,53,0.10);
+        padding: 2rem 1rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        overflow-x: auto;
+    }
+    .contacts-title {
+        color: var(--primary-color);
+        font-size: 2.2rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2.5rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        position: relative;
+        padding-bottom: 15px;
+    }
+    .contacts-title::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        width: 80px;
+        height: 4px;
+        background: var(--primary-color);
+        border-radius: 2px;
+    }
+    table.contacts-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--dark-bg);
+        color: var(--text-light);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(163,230,53,0.05);
+    }
+    .contacts-table th, .contacts-table td {
+        padding: 16px 12px;
+        border-bottom: 1px solid rgba(163,230,53,0.08);
+        text-align: center;
+        vertical-align: middle;
+    }
+    .contacts-table th {
+        background: var(--primary-color);
+        color: var(--darker-bg);
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .contacts-table tr:last-child td {
+        border-bottom: none;
+    }
+    .contacts-table tr {
+        transition: background 0.2s;
+    }
+    .contacts-table tr:hover {
+        background: rgba(163,230,53,0.07);
+    }
+    .contacts-table img {
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+        object-fit: cover;
+        box-shadow: 0 2px 8px rgba(163,230,53,0.10);
+        transition: transform 0.2s;
+    }
+    .contacts-table img:hover {
+        transform: scale(1.08);
+    }
+    .action-btn-container {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+    .delete-btn {
+        background: #ff4757;
+        color: #fff;
+    }
+    .delete-btn:hover {
+        background: var(--dark-bg);
+        color: #ff4757;
+        border: 2px solid #ff4757;
+        transform: translateY(-2px);
+    }
+    .update-btn {
+        background: var(--primary-color);
+        color: var(--darker-bg);
+    }
+    .update-btn:hover {
+        background: var(--dark-bg);
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        transform: translateY(-2px);
+    }
+    .badge-id {
+        background: #ff4757;
+        color: #fff;
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 1em;
+        font-weight: 700;
+    }
+    @media (max-width: 900px) {
+        .contacts-table-container {
+            padding: 1rem 0.2rem;
+        }
+        .contacts-title {
+            font-size: 1.5rem;
+        }
+        .contacts-table th, .contacts-table td {
+            padding: 10px 6px;
+            font-size: 0.95rem;
+        }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="contacts-section">
+    <div class="contacts-table-container animate__animated animate__fadeInUp">
+        <h2 class="contacts-title animate__animated animate__fadeInDown">My Contacts</h2>
+        <table class="contacts-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contact in Contacts %}
+                <tr class="animate__animated animate__fadeIn">
+                    <td><span class="badge-id">{{ contact.id }}</span></td>
+                    <td>{{ contact.firstName }}</td>
+                    <td>{{ contact.lastName }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.message }}</td>
+                    <td>
+                        <img src="{{contact.image.url}}" alt="Contact Image" />
+                    </td>
+                    <td class="action-btn-container">
+                        <a href="{% url 'delete' contact.id %}" class="action-btn delete-btn">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+                        <a href="{% url 'update' contact.id %}" class="action-btn update-btn">
+                            <i class="bi bi-pencil"></i> Update
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

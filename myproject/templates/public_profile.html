@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% block title %}Public Profile | Portfolio Builder{% endblock %}
+
+{% block styles %}
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --text-color: #2c3e50;
+        --light-bg: #f8f9fa;
+        --darker-bg: #1a1a1a;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+        background: var(--darker-bg);
+        color: white;
+    }
+
+    .card-header {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 15px 15px 0 0 !important;
+        padding: 1rem 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .section-title {
+        color: chartreuse;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+
+    .project-card {
+        background: var(--darker-bg);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .project-card img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .badge {
+        background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+        padding: 0.5rem 1rem;
+        margin: 0.25rem;
+        border-radius: 20px;
+    }
+
+    .experience-item, .education-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .experience-item h5, .education-item h5 {
+        color: chartreuse;
+        margin-bottom: 0.5rem;
+    }
+
+    .text-muted {
+        color: #888 !important;
+    }
+
+    .bio-section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .languages-section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+
+    .username {
+        color: chartreuse;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .email {
+        color: #888;
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="profile-header text-center">
+                        <i class="bi bi-person-circle" style="font-size: 3rem;"></i>
+                        <h2 class="username mt-3">{{ user.username }}</h2>
+                        <p class="email">{{ user.email }}</p>
+                    </div>
+                    
+                    {% if profile %}
+                        <div class="bio-section">
+                            <h5 class="section-title">About Me</h5>
+                            <p class="text-muted">{{ profile.about_me|default:"No bio available" }}</p>
+                        </div>
+                        
+                        {% if profile.languages %}
+                            <div class="languages-section">
+                                <h5 class="section-title">Languages</h5>
+                                <p class="text-muted">{{ profile.languages }}</p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <!-- Projects Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0"><i class="bi bi-code-square me-2"></i>Projects</h3>
+                </div>
+                <div class="card-body">
+                    {% if projects %}
+                        <div class="row">
+                            {% for project in projects %}
+                                <div class="col-md-6 mb-4">
+                                    <div class="project-card">
+                                        {% if project.image %}
+                                            <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ project.title }}</h5>
+                                            <p class="card-text text-muted">{{ project.description|truncatewords:20 }}</p>
+                                            <div class="mb-2">
+                                                {% for skill in project.skills.all %}
+                                                    <span class="badge">{{ skill.name }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No projects available</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Experience Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0"><i class="bi bi-briefcase me-2"></i>Experience</h3>
+                </div>
+                <div class="card-body">
+                    {% if experiences %}
+                        {% for exp in experiences %}
+                            <div class="experience-item">
+                                <h5>{{ exp.title }}</h5>
+                                <h6 class="text-muted">{{ exp.company }}</h6>
+                                <p class="text-muted">{{ exp.start_date|date:"F Y" }} - {% if exp.end_date %}{{ exp.end_date|date:"F Y" }}{% else %}Present{% endif %}</p>
+                                <p class="text-muted">{{ exp.description }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No experience listed</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Education Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0"><i class="bi bi-mortarboard me-2"></i>Education</h3>
+                </div>
+                <div class="card-body">
+                    {% if educations %}
+                        {% for edu in educations %}
+                            <div class="education-item">
+                                <h5>{{ edu.degree }}</h5>
+                                <h6 class="text-muted">{{ edu.institution }}</h6>
+                                <p class="text-muted">{{ edu.start_date|date:"F Y" }} - {% if edu.end_date %}{{ edu.end_date|date:"F Y" }}{% else %}Present{% endif %}</p>
+                                <p class="text-muted">{{ edu.description }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No education listed</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Print only the resume-main content
+    function printResume() {
+        window.print();
+    }
+</script>
+{% endblock %} 

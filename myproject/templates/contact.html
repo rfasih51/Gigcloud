@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title> -->
+{% block title %}Contact Us{% endblock %} {% block styles %}
+<style>
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --accent-gradient: linear-gradient(45deg, #ff3cac, #562b7c, #2b86c5);
+    --text-color: #ffffff;
+    --input-bg: rgba(255, 255, 255, 0.9);
+    --card-bg: rgba(255, 255, 255, 0.15);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--primary-gradient);
+    color: var(--text-color);
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 0;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.contact-container {
+    background: var(--card-bg);
+    padding: 50px;
+    border-radius: 30px;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    position: relative;
+    z-index: 1;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.contact-container:hover {
+    transform: translateY(-5px);
+}
+
+.animated-heading {
+    font-size: 2.8rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 300%;
+    animation: gradient 4s ease infinite;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.contact-container p {
+    margin-bottom: 35px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.input-box {
+    margin: 20px 0;
+    position: relative;
+}
+
+.input-box input,
+.input-box textarea {
+    width: 100%;
+    padding: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    outline: none;
+    font-size: 16px;
+    color: #333;
+    background: var(--input-bg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-box input:focus,
+.input-box textarea:focus {
+    border-color: #764ba2;
+    box-shadow: 0 0 15px rgba(118, 75, 162, 0.3);
+    transform: translateY(-2px);
+}
+
+.input-box textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.input-box input[type="file"] {
+    padding: 15px;
+    background: var(--input-bg);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+}
+
+.btn {
+    width: 100%;
+    background: var(--accent-gradient);
+    color: #fff;
+    padding: 18px;
+    border: none;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 768px) {
+    .contact-container {
+        width: 95%;
+        padding: 30px 20px;
+    }
+
+    .animated-heading {
+        font-size: 2.2rem;
+    }
+
+    .input-box input,
+    .input-box textarea {
+        padding: 15px;
+    }
+}
+</style>
+<!-- </head>
+<body> -->
+{% endblock %} {% block content %}
+<div class="contact-container">
+  <h2 class="animated-heading">Get In Touch</h2>
+  <p>
+    We'd love to hear from you! Fill out the form below and we'll get back to
+    you as soon as possible.
+  </p>
+
+  <form action="/contact-us" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="input-box">
+      <input
+        id="firstName"
+        type="text"
+        name="firstName"
+        placeholder="First Name"
+        required
+      />
+    </div>
+    <div class="input-box">
+      <input
+        id="lastName"
+        type="text"
+        name="lastName"
+        placeholder="Last Name"
+        required
+      />
+    </div>
+    <div class="input-box">
+      <input
+        id="email"
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+      />
+    </div>
+    <div class="input-box">
+      <textarea
+        id="message"
+        name="message"
+        rows="5"
+        placeholder="Your Message"
+        required
+      ></textarea>
+    </div>
+    <div class="input-box">
+      <input type="file" id="image" name="image" accept="image/*" required />
+    </div>
+    <button type="submit" class="btn" onclick="submitForm()">
+      Send Message
+    </button>
+  </form>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  function submitForm() {
+    alert("Your message has been sent successfully!");
+  }
+</script>
+{% endblock %}
+<!-- </body>
+</html> -->

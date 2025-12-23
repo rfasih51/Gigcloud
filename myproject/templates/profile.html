@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}My Profile | Portfolio Builder{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card p-4 shadow-lg">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-person-circle" style="font-size: 2.5rem; color: var(--primary-color);"></i>
+                    <div class="ms-3">
+                        <h3 class="mb-0" style="text-transform: uppercase; color: chartreuse;">{{ user.username }}</h3>
+                        <div class="text-muted" style="color: rgb(114, 203, 24);">{{ user.email }}</div>
+                        <div class="text-muted" style="color: rgb(114, 203, 24);">{{ user.first_name }} {{ user.last_name }}</div>
+                        
+                    </div>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-outline-primary ms-auto me-2"><i class="bi bi-pencil"></i> Edit Profile</a>
+                    <a href="{% url 'public_profile' %}" class="btn btn-outline-secondary"><i class="bi bi-file-earmark-person"></i> My Resume</a>
+                </div>
+                <div class="mb-4">
+                    <h5 class="mb-2" style="color: var(--primary-color);">About Me</h5>
+                    <div class="bg-dark text-light p-3 rounded" style="min-height: 60px;">{{ profile.about_me|default:'No about me info yet.' }}</div>
+                </div>
+                <div class="mb-4">
+                    <h5 class="mb-2" style="color: var(--primary-color);">Languages</h5>
+                    <div class="bg-dark text-light p-3 rounded" style="min-height: 40px;">{{ profile.languages|default:'No languages listed.' }}</div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12 col-md-6 mb-3 mb-md-0">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0" style="color: var(--primary-color);">Experience</h5>
+                            <a href="{% url 'add_experience' %}" class="btn btn-sm btn-success"><i class="bi bi-plus-circle"></i> Add</a>
+                        </div>
+                        {% if experiences %}
+                        <ul class="list-group mb-3">
+                            {% for exp in experiences %}
+                            <li class="list-group-item bg-dark text-light mb-2" style="border-radius: 8px;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ exp.title }}</strong> at <span class="text-info">{{ exp.company }}</span><br>
+                                        <span class="small text-muted">{{ exp.start_date }} - {% if exp.end_date %}{{ exp.end_date }}{% else %}Present{% endif %}</span>
+                                        <div class="small">{{ exp.description }}</div>
+                                    </div>
+                                    <div>
+                                        <a href="{% url 'edit_experience' exp.id %}" class="btn btn-sm btn-outline-info me-1"><i class="bi bi-pencil"></i></a>
+                                        <a href="{% url 'delete_experience' exp.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this experience?');"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <div class="alert alert-secondary">No experience added yet.</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0" style="color: var(--primary-color);">Education</h5>
+                            <a href="{% url 'add_education' %}" class="btn btn-sm btn-success"><i class="bi bi-plus-circle"></i> Add</a>
+                        </div>
+                        {% if educations %}
+                        <ul class="list-group mb-3">
+                            {% for edu in educations %}
+                            <li class="list-group-item bg-dark text-light mb-2" style="border-radius: 8px;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ edu.degree }}</strong> at <span class="text-info">{{ edu.institution }}</span><br>
+                                        <span class="small text-muted">{{ edu.start_date }} - {% if edu.end_date %}{{ edu.end_date }}{% else %}Present{% endif %}</span>
+                                        <div class="small">{{ edu.description }}</div>
+                                    </div>
+                                    <div>
+                                        <a href="{% url 'edit_education' edu.id %}" class="btn btn-sm btn-outline-info me-1"><i class="bi bi-pencil"></i></a>
+                                        <a href="{% url 'delete_education' edu.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this education?');"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <div class="alert alert-secondary">No education added yet.</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{% url 'add_project' %}" class="btn btn-primary w-100 mb-3"><i class="bi bi-plus-circle"></i> Add New Project</a>
+                <h5 class="mt-4 mb-3" style="color: var(--primary-color);">My Projects</h5>
+                {% if projects %}
+                <div class="list-group">
+                    {% for project in projects %}
+                    <div class="list-group-item d-flex align-items-center justify-content-between mb-2" style="background: var(--darker-bg); border-radius: 8px; color: chartreuse;">
+                        <div>
+                            <strong>{{ project.title }}</strong>
+                            <div class="text-muted small" style="color: whitesmoke !important;">{{ project.description|truncatewords:10 }}</div>
+                        </div>
+                        <div>
+                            <a href="{% url 'edit_project' project.id %}" class="btn btn-sm btn-outline-info me-2"><i class="bi bi-pencil-square"></i></a>
+                            <a href="{% url 'delete_project_user' project.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this project?');"><i class="bi bi-trash"></i></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info mt-3">You have not added any projects yet.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
